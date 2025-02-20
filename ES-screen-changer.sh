@@ -39,21 +39,21 @@ ExitMenu() {
 
 # Fonction pour mettre à jour les fichiers SVG
 mettre_a_jour_svg() {
-    dialog --infobox "Vérification de la connexion Internet..." 3 50 > $CURR_TTY
+    dialog --infobox "Checking Internet connection..." 3 50 > $CURR_TTY
     sleep 2
     
     if ! wget -q --spider http://google.com; then
-        dialog --msgbox "Aucune connexion Internet détectée!" 6 50 > $CURR_TTY
+        dialog --msgbox "No Internet connection detected!" 6 50 > $CURR_TTY
         return
     fi
     
     TEMP_DIR="/tmp/ES-screen-changer"
    sudo rm -rf "$TEMP_DIR"
-    GITHUB_REPO="https://github.com/Jason3x/Test.git"  # URL correcte pour cloner le dépôt Git
+    
    sudo git clone --depth 1 "$GITHUB_REPO" "$TEMP_DIR" >/dev/null 2>&1
     
     if [[ $? -ne 0 ]]; then
-        dialog --msgbox "Erreur lors du téléchargement des fichiers." 6 50 > $CURR_TTY
+        dialog --msgbox "Error downloading files." 6 50 > $CURR_TTY
         return
     fi
     
@@ -69,9 +69,9 @@ mettre_a_jour_svg() {
     sudo rm -rf "$TEMP_DIR"
     
     if [[ $CHANGED -eq 1 ]]; then
-        dialog --msgbox "Mise à jour effectuée avec succès!" 6 50 > $CURR_TTY
+        dialog --msgbox "Update completed successfully!" 6 50 > $CURR_TTY
     else
-        dialog --msgbox "Aucune nouvelle mise à jour." 6 50 > $CURR_TTY
+        dialog --msgbox "No new updates available." 6 50 > $CURR_TTY
     fi
 }
 
@@ -81,11 +81,11 @@ ApplySVG() {
     local selected_file=$1
     sudo cp "$selected_file" "$TARGET_DIR/$SVG_FILE"
     sudo chmod 644 "$TARGET_DIR/$SVG_FILE"
-    dialog --infobox "Fichier SVG remplacé avec succès!" 3 40 > $CURR_TTY
+    dialog --infobox "SVG file replaced successfully!" 3 40 > $CURR_TTY
   sleep 2  # Attendre 2 secondes pour que le message soit visible
   
   # Afficher le message puis fermer automatiquement après 2 secondes
-  dialog --infobox "Redémarrage d'EmulationStation..." 3 40 > $CURR_TTY
+  dialog --infobox "Restarting EmulationStation...." 3 40 > $CURR_TTY
   sleep 2  # Attendre 2 secondes pour que le message soit visible
 
   # Redémarrer EmulationStation proprement
@@ -99,11 +99,11 @@ RestoreSVG() {
     if [[ -f "$BACKUP_RESTAURE" ]]; then
         sudo cp "$BACKUP_RESTAURE" "$TARGET_DIR/$SVG_FILE"
         sudo chmod 644 "$TARGET_DIR/$SVG_FILE"
-        dialog --infobox "Fichier SVG restauré avec succès!" 3 40 > $CURR_TTY
+        dialog --infobox "SVG file restored successfully!" 3 40 > $CURR_TTY
   sleep 2  # Attendre 2 secondes pour que le message soit visible
   
   # Afficher le message puis fermer automatiquement après 2 secondes
-  dialog --infobox "Redémarrage d'EmulationStation..." 3 40 > $CURR_TTY
+  dialog --infobox "Restarting EmulationStation..." 3 40 > $CURR_TTY
   sleep 2  # Attendre 2 secondes pour que le message soit visible
 
   # Redémarrer EmulationStation proprement
@@ -112,7 +112,7 @@ RestoreSVG() {
   exit 0
   
     else
-        dialog --msgbox "Aucun fichier de sauvegarde trouvé." 6 40 > $CURR_TTY
+        dialog --msgbox "No save files found." 6 40 > $CURR_TTY
     fi
 }
 
@@ -129,19 +129,19 @@ ListSVG() {
             fi
         done
     else
-        dialog --msgbox "Répertoire '$SVG_DIR' introuvable!" 6 40 > $CURR_TTY
+        dialog --msgbox "Directory '$SVG_DIR' not found!" 6 40 > $CURR_TTY
         return 1
     fi
 
     if [ ${#file_list[@]} -eq 0 ]; then
-        dialog --msgbox "Aucun fichier SVG trouvé dans '$SVG_DIR'." 6 40 > $CURR_TTY
+        dialog --msgbox "No SVG files found in'$SVG_DIR'." 6 40 > $CURR_TTY
         return 1
     fi
 
     # Affiche la liste des fichiers SVG disponibles pour sélection
     selected_file=$(dialog --clear \
         --backtitle "ES screen changer by Jason" \
-        --title "Sélectionner un fichier SVG" \
+        --title "Select an SVG file" \
         --menu "" 15 55 10 \
         "${file_list[@]}" 2>&1 > $CURR_TTY)
     
@@ -149,7 +149,7 @@ ListSVG() {
     if [[ -n "$selected_file" ]]; then
         ApplySVG "$SVG_DIR/$selected_file"
     else
-        dialog --msgbox "Aucun fichier sélectionné." 6 40 > $CURR_TTY
+        dialog --msgbox "No files selected." 6 40 > $CURR_TTY
     fi
 }
 
@@ -165,15 +165,15 @@ MainMenu() {
   while true; do
     mainselection=(dialog \
         --backtitle "ES screen changer by Jason" \
-        --title "Menu Principal" \
+        --title "Main Menu" \
         --no-collapse \
         --clear \
-        --cancel-label "Sortir" \
-        --menu "Choisissez une option" 15 55 8)
-    mainoptions=( 1 "Sélectionner un fichier SVG" \
-                  2 "Restaurer le fichier SVG d'origine" \
-                  3 "Mettre à jour les fichiers SVG" \
-                  4 "Sortir" )
+        --cancel-label "Exit" \
+        --menu "Choose an option" 15 55 8)
+    mainoptions=( 1 "Select an SVG file" \
+                  2 "Restore original SVG file" \
+                  3 "Update SVG files" \
+                  4 "Exit" )
     mainchoices=$("${mainselection[@]}" "${mainoptions[@]}" 2>&1 > $CURR_TTY)
     if [[ $? != 0 ]]; then
       ExitMenu
