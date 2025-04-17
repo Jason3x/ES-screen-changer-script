@@ -12,4 +12,4 @@ After that, launch the script, go to option/tools and clic on ES-screen-changer.
 You can create your own SVG logo without renaming it to “splash”—as long as it has the .svg extension,You just need to add it in /roms/tools/ES-screen-changer folder, go to to option/tools and clic on ES-screen-changer.sh, select your svg and the script will take care of the rest
 
 
-You can join discord https://discord.gg/4EBHCewS and website https://www.tyranight.fr/r36s.php
+You can join discord https://discord.gg/4hG9CCPRah and website https://www.tyranight.fr/r36s.php
