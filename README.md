@@ -13,3 +13,5 @@ You can create your own SVG logo without renaming it to “splash”—as long a
 
 
 You can join discord https://discord.gg/4hG9CCPRah and website https://www.tyranight.fr/r36s.php
+
+https://ko-fi.com/jason3x
